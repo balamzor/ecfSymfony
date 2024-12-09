@@ -1,0 +1,13 @@
+form:
+  confirm_password: 'Confirmer le mot de passe'
+  password: 'Mot de passe'
+  first_name: 'Prénom'
+  last_name: 'Nom'
+  address: 'Adresse'
+  postal: 'Code postal'
+  telephone: 'Téléphone'
+  city: 'Ville'
+  email: 'Email'
+  submit: 'Valider'
+  cancel: 'Annuler'
+  delete: 'Supprimer'
