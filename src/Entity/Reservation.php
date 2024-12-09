@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\ReservationRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: ReservationRepository::class)]
+class Reservation
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $RentalStart = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $RentalEnd = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Workspace $workspace = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getRentalStart(): ?\DateTimeInterface
+    {
+        return $this->RentalStart;
+    }
+
+    public function setRentalStart(\DateTimeInterface $RentalStart): static
+    {
+        $this->RentalStart = $RentalStart;
+
+        return $this;
+    }
+
+    public function getRentalEnd(): ?\DateTimeInterface
+    {
+        return $this->RentalEnd;
+    }
+
+    public function setRentalEnd(\DateTimeInterface $RentalEnd): static
+    {
+        $this->RentalEnd = $RentalEnd;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getWorkspace(): ?Workspace
+    {
+        return $this->workspace;
+    }
+
+    public function setWorkspace(?Workspace $workspace): static
+    {
+        $this->workspace = $workspace;
+
+        return $this;
+    }
+}
