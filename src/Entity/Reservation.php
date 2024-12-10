@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Reservation
 {
     #[ORM\Id]
@@ -27,6 +28,20 @@ class Reservation
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Workspace $workspace = null;
+
+    public function __construct()
+    {
+        $this->RentalStart = new \DateTime();
+        $this->RentalEnd = new \DateTime();
+    }
+
+    public function prePersist()
+    {
+        $this->RentalStart = new \DateTime();
+
+        $start = $this->RentalStart;
+        $this->RentalEnd = date_add($start, date_interval_create_from_date_string("6 days"));
+    }
 
     public function getId(): ?int
     {
