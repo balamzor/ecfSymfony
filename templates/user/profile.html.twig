@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre profil{% endblock %}
+
+{% block navbar %}{% include 'components/_navbar.html.twig' %}{% endblock %}
+
+{% block body %}
+    <div class="container w-75">
+    <h1>Votre profil</h1>
+    <div class='container w-75'>
+        <table class="container table border rounded mt-5 shadow">
+            <tr>
+                <th class="p-3">Prénom</th>
+                <td class="p-3">{{ app.user.firstName }}</td>
+            </tr>
+            <tr>
+                <th class="p-3">Nom</th>
+                <td class="p-3">{{ app.user.lastName }}</td>
+            </tr>
+            <tr>
+                <th class="p-3">Email</th>
+                <td class="p-3">{{ app.user.email }}</td>
+            </tr>
+            <tr>
+                <th class="p-3">Adresse</th>
+                <td class="p-3">{{ app.user.address }}</td>
+            </tr>
+            <tr>
+                <th class="p-3">Code postal</th>
+                <td class="p-3">{{ app.user.postal }}</td>
+            </tr>
+            <tr>
+                <th class="p-3">Ville</th>
+                <td class="p-3">{{ app.user.city }}</td>
+            </tr>
+            <tr>
+                <th class="p-3">Téléphone</th>
+                <td class="p-3">{{ app.user.telephone }}</td>
+            </tr>
+            <tr>
+                <th class="p-3">Date de naissance</th>
+                <td class="p-3">{{ app.user.birthDate|date('d/m/Y') }}</td>
+            </tr>
+        </table>
+        <a href="/user/update" class="btn btn-primary mt-5">Modifier</a></div>
+    </div>
+    
+
+
+
+
+{% endblock %}
