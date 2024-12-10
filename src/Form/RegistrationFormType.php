@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class RegistrationFormType extends AbstractType
@@ -23,7 +24,7 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class, [
-                'label' => 'Prénom',
+                'label' => 'form.first_name',
                 'label_attr' => ['class' => 'form-label'],
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Prénom'],
             ])
