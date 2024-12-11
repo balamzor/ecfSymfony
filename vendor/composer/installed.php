@@ -4,6 +4,7 @@
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
         'reference' => '54d92ff566231bc97603c95d4b4b35fc6491eaa4',
+
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -14,6 +15,7 @@
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
             'reference' => '54d92ff566231bc97603c95d4b4b35fc6491eaa4',
+
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1301,6 +1303,15 @@
             'reference' => 'e99b4e94d124b29ee4cf3140e1b537d2dad8cec9',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/yaml',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'tattali/calendar-bundle' => array(
+            'pretty_version' => 'v1.3.0',
+            'version' => '1.3.0.0',
+            'reference' => '0885fc7157211b9c0b6e9c49f8b815b8f979d52d',
+            'type' => 'symfony-bundle',
+            'install_path' => __DIR__ . '/../tattali/calendar-bundle',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
