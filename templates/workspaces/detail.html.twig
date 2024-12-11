@@ -5,6 +5,10 @@
   Détails de la salle
 {% endblock %}
 
+{% block navbar %}
+  {% include 'components/_navbar.html.twig' %}
+{% endblock %}
+
 {% block body %}
   <div class="container">
     <h1>Salle {{ workspace.name }}</h1>
