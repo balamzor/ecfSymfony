@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -204,6 +206,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $birthDate = null;
 
+    /**
+     * @var Collection<int, Subscriptions>
+     */
+    #[ORM\OneToMany(targetEntity: Subscriptions::class, mappedBy: 'idUser', orphanRemoval: true)]
+    private Collection $subscriptions;
+
+
+
+    public function __construct()
+    {
+        $this->subscriptions = new ArrayCollection();
+    }
+
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
@@ -225,4 +240,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    // #[ORM\Column]
+    // private ?string $type = null;
+
+    // #[ORM\Column]
+    // private ?string $prix = null;
+
+    // public function getPrix(): ?string
+    // {
+    //     return $this->type;
+    // }
+
+    // public function setPrix(string $type): static
+    // {
+    //     $this->type = $type;
+
+    //     return $this;
+    // }
+    // public function getType(): ?string
+    // {
+    //     return $this->prix;
+    // }
+
+    // public function setType(string $prix): static
+    // {
+    //     $this->prix = $prix;
+
+    //     return $this;
+    // }
+
+    /**
+     * @return Collection<int, Subscriptions>
+     */
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscriptions;
+    }
+
+    public function addSubscription(Subscriptions $subscription): static
+    {
+        if (!$this->subscriptions->contains($subscription)) {
+            $this->subscriptions->add($subscription);
+            $subscription->setIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscription(Subscriptions $subscription): static
+    {
+        if ($this->subscriptions->removeElement($subscription)) {
+            // set the owning side to null (unless already changed)
+            if ($subscription->getIdUser() === $this) {
+                $subscription->setIdUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }
