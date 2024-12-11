@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\EditUserType;
 use App\Form\RegistrationFormType;
 use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,6 +25,13 @@ class UserController extends AbstractController
     #[Route('/user/subscribe', name: 'subscribe_user')]
     public function subscribe(): Response
     {
+        $stripe = new \Stripe\StripeClient('sk_test_BQokikJOvBiI2HlWgH4olfQ2');
+        $customer = $stripe->customers->create([
+            'description' => 'example customer',
+            'email' => 'email@example.com',
+            'payment_method' => 'pm_card_visa',
+        ]);
+        // echo $customer;
         return $this->render('user/subscribe.html.twig', [
             'controller_name' => 'UserController',
         ]);
@@ -32,32 +40,17 @@ class UserController extends AbstractController
     public function profile(): Response
     {
         $user = $this->getUser();
-        // dd($user);
         return $this->render('user/profile.html.twig', [
             'controller_name' => 'UserController',
         ]);
     }
     #[Route('/user/update', name: 'profile_update')]
-    public function update(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
+    public function update(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(EditUserType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var string $plainPassword */
-            $plainPassword = $form->get('plainPassword')->getData();
-            $confirmPassword = $form->get('confirmPassword')->getData();
-
-            if ($plainPassword !== $confirmPassword) {
-                $form->get('confirmPassword')->addError(new FormError('Les mots de passe ne correspondent pas'));
-                return $this->render('registration/register.html.twig', [
-                    'registrationForm' => $form
-                ]);
-            }
-            // encode the plain password
-            $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-            $user->setRoles(['ROLE_USER']);
             $user->setFirstName($form->get('firstName')->getData());
             $user->setLastName($form->get('lastName')->getData());
             $user->setAddress($form->get('address')->getData());
@@ -65,18 +58,13 @@ class UserController extends AbstractController
             $user->setCity($form->get('city')->getData());
             $user->setTelephone($form->get('telephone')->getData());
             $user->setBirthDate($form->get('birthDate')->getData());
-
-
             $entityManager->persist($user);
             $entityManager->flush();
-
-            // do anything else you need here, like send an email
-
-            // return $security->login($user, UserAuthenticator::class, 'main');
+            return $this->redirectToRoute('profile_user');
         }
         // dd($user);
         return $this->render('user/update.html.twig', [
-            'controller_name' => 'UserController',
+            'form' => $form->createView(),
         ]);
     }
 
