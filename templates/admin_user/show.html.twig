@@ -7,10 +7,7 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
+            
             <tr>
                 <th>Email</th>
                 <td>{{ user.email }}</td>
@@ -22,36 +19,33 @@
                     {% endfor %}
                 </td>
             </tr>
+            
             <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            <tr>
-                <th>FirstName</th>
+                <th>Prénom</th>
                 <td>{{ user.firstName }}</td>
             </tr>
             <tr>
-                <th>LastName</th>
+                <th>Nom</th>
                 <td>{{ user.lastName }}</td>
             </tr>
             <tr>
-                <th>Address</th>
+                <th>Adresse</th>
                 <td>{{ user.address }}</td>
             </tr>
             <tr>
-                <th>Postal</th>
+                <th>Code Postal</th>
                 <td>{{ user.postal }}</td>
             </tr>
             <tr>
-                <th>City</th>
+                <th>Ville</th>
                 <td>{{ user.city }}</td>
             </tr>
             <tr>
-                <th>Telephone</th>
+                <th>Téléphone</th>
                 <td>{{ user.telephone }}</td>
             </tr>
             <tr>
-                <th>BirthDate</th>
+                <th>Date de naissance</th>
                 <td>{{ user.birthDate ? user.birthDate|date('Y-m-d') : '' }}</td>
             </tr>
         </tbody>
