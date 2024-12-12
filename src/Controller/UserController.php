@@ -38,10 +38,9 @@ class UserController extends AbstractController
             // 'formAnnuel' => $formAnnuel->createView(),
         ]);
     }
-    #[Route('/user/payment/{id}', name: 'payment_user', methods: ['GET'])]
+    #[Route('/user/payment/{id}', name: 'payment_user', methods: ['GET', 'POST'])]
     public function payment(Request $request, EntityManagerInterface $entityManager, $id): Response
     {
-        $subscriptions = $entityManager->getRepository(Subscriptions::class)->find($id);
         $user = $this->getUser();
 
         $prix = 0;
@@ -55,37 +54,39 @@ class UserController extends AbstractController
             $prix = "259,09";
             $echeance = '+1 year';
         }
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randomString = '';
-        for ($i = 0; $i < 10; $i++) {
-            $randomString .= $characters[rand(0, strlen($characters) - 1)];
-        }
-        $token = "_tokenCSRF{$randomString}";
         $subscriptions = new Subscriptions();
         $form = $this->createForm(SubscribeType::class, $subscriptions);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $subscriptions->setIdUser($user->getId());
+            $subscriptions->setIdUser($user);
             $subscriptions->setDateDebut(new \DateTime());
-            $subscriptions->setDateFin(new \DateTime($echeance));
+            $subscriptions->setDateFin((new \DateTime())->modify($echeance));
+
             $entityManager->persist($subscriptions);
             $entityManager->flush();
+
             return $this->redirectToRoute('profile_user');
         }
-        // dd($type, $prix, $user);
+
         return $this->render('user/payment.html.twig', [
             'type' => $type,
             'prix' => $prix,
             'form' => $form->createView(),
-            'token' => $token
         ]);
     }
+
+
+
     #[Route('/user/profile', name: 'profile_user')]
-    public function profile(): Response
+    public function profile(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        $subscription = $entityManager
+            ->getRepository(Subscriptions::class)
+            ->findActiveSubscriptionByUser($user);
         return $this->render('user/profile.html.twig', [
-            'controller_name' => 'UserController',
+            'subscription' => $subscription
         ]);
     }
     #[Route('/user/update', name: 'profile_update')]

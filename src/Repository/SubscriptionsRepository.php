@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Subscriptions;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Subscriptions>
@@ -40,4 +41,15 @@ class SubscriptionsRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function findActiveSubscriptionByUser(User $user): ?Subscriptions
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.idUser = :user')
+            ->andWhere('s.dateFin > :now') // Récupérer uniquement les abonnements actifs
+            ->setParameter('user', $user)
+            ->setParameter('now', new \DateTime())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -87,10 +87,6 @@ class SubscribeType extends AbstractType
                 ],
                 'mapped' => false,
             ])
-            ->add('csrf', HiddenType::class, [
-                'data' => '',
-                'mapped' => false,
-            ])
             // ->add('submit', SubmitType::class, [
             //     'label' => 'Effectuer le paiement',
             //     'attr' => [

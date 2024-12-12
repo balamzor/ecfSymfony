@@ -55,8 +55,12 @@
             </div>
             <h3 class="mt-5 text-center">Informations de paiement</h3>
             <div class="container table border rounded mt-5 mb-5 shadow w-50 p-3">
-            {{ form_start(form) }}
-            {{ form_errors(form)}}
+            {{ form_start(form, { method: 'POST' }) }}
+            {{ form_errors(form) }}
+
+{% for field in form %}
+    {{ form_errors(field) }}
+{% endfor %}
             <div class="row">
                 <div class="col">
                     <div class="input-group input-group-sm mb-3">
@@ -91,7 +95,6 @@
                         {{ form_label(form.cbVerif) }}
                         {{ form_widget(form.cbVerif) }}
                     </div>
-                    {{ form_widget(form.csrf) }}
                 </div>
                 <div class="col">
                     {# {{ form_widget(form.submit) }} #}
