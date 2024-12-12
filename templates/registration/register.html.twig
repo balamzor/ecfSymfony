@@ -22,12 +22,15 @@
                 </div>
                 {{ form_row(registrationForm.email) }}
                 <div class="d-flex flex-row gap-3 justify-content-between mb-3 mt-3">
-                    {{ form_row(registrationForm.plainPassword, {
+                    {{ form_row(registrationForm.plainPassword.first, {
                         label: 'Mot de passe'
                     }) }}
-                    {{ form_row(registrationForm.confirmPassword, {
+                    {{ form_row(registrationForm.plainPassword.second, {
                         label: 'Confirmer le mot de passe'
                     }) }}
+                    {# {{ form_row(registrationForm.confirmPassword, {
+                        label: 'Confirmer le mot de passe'
+                    }) }} #}
                 </div>
                 <div style="color: red; font-weight: bold">{{ form_errors(registrationForm)}}</div>
                 <div class="mt-3 form-check">{{ form_row(registrationForm.agreeTerms) }}</div>

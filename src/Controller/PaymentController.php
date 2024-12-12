@@ -19,22 +19,27 @@ class PaymentController extends AbstractController
     #[Route('/payment/checkout', name: 'app_checkout', methods: ['POST'])]
     public function checkout(Request $request): Response
     {
+
         $data = $request->request->all();
-        // dd($data);
         $prenom = $request->request->get('firstName');
         $nom = $request->request->get('lastName');
         $cbNumbers = $request->request->get('cbNumbers');
         $cbDate = $request->request->get('cbDate');
         $cbVerif = $request->request->get('cbVerif');
+        $valid = $this->isValid(str_split($cbNumbers));
+        $csrf = $request->request->get('csrf');
+        $token = $request->get('token');
 
-        // if (!$this->isValid(str_split($cbNumbers))) {
-        //     // $this->addFlash('error', 'Le numéro de carte est incorrect');
-        //     // return $this->redirectToRoute('app_checkout');
-        //     echo "caca";
-        // }
+
+
+        if ($csrf === $token) {
+
+
+        }
+
 
         return $this->render('payment/checkout.html.twig', [
-            'controller_name' => 'PaymentController',
+            'valid' => $valid,
         ]);
     }
     private function isValid(array $cardNumber): bool
@@ -52,7 +57,13 @@ class PaymentController extends AbstractController
             }
         }
 
-        return $cardNumber[count($cardNumber) - 1] === ((10 - ($sum % 10)) % 10);
+        if ($cardNumber[count($cardNumber) - 1] === ((10 - ($sum % 10)) % 10)) {
+            return true;
+        } else {
+            return false;
+        }
+
+        // return $cardNumber[count($cardNumber) - 1] === ((10 - ($sum % 10)) % 10);
     }
 
 }

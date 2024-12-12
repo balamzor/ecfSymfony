@@ -8,7 +8,6 @@
 
 {% block body %}
     <h1 class="text-center mb-5">Paiement</h1>
-    {{ token }}
     <h3 class="text-center">Récapitulatif de vos informations de facturations :</h3>
             <div class="container w-50">
                 <table class="container table border rounded mt-5 shadow">
@@ -56,7 +55,51 @@
             </div>
             <h3 class="mt-5 text-center">Informations de paiement</h3>
             <div class="container table border rounded mt-5 mb-5 shadow w-50 p-3">
-            <form method="post" action="{{ path('app_checkout') }}">
+            {{ form_start(form) }}
+            {{ form_errors(form)}}
+            <div class="row">
+                <div class="col">
+                    <div class="input-group input-group-sm mb-3">
+                        {{ form_label(form.firstName) }}
+                        {{ form_widget(form.firstName) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group input-group-sm mb-3">
+                        {{ form_label(form.lastName) }}
+                        {{ form_widget(form.lastName) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group input-group-sm mb-3">
+                        {{ form_label(form.cbNumbers) }}
+                        {{ form_widget(form.cbNumbers) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group input-group-sm mb-3">
+                        {{ form_label(form.cbDate) }}
+                        {{ form_widget(form.cbDate) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group input-group-sm">
+                        {{ form_label(form.cbVerif) }}
+                        {{ form_widget(form.cbVerif) }}
+                    </div>
+                    {{ form_widget(form.csrf) }}
+                </div>
+                <div class="col">
+                    {# {{ form_widget(form.submit) }} #}
+                    <button type="submit" class="btn btn-primary w-100">Effectuer le paiement</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+            {# <form method="post" action="{{ path('payment_user', {'id': idAbo}) }}">
                  <div class="row">
                     <div class="col">
                         <div class="input-group input-group-sm mb-3">
@@ -101,12 +144,13 @@
                         </div>
                         <input type="tel" maxlength="3" class="form-control" name="cbVerif">
                     </div>
+                    <input type="hidden" class="form-control" name="csrf" value="{{ token }}">
                     </div>
                     <div class="col">
                          <button type="submit" class="btn btn-primary w-100">Effectuer le paiement</button>
                     </div>
                 </div>
-            </form>
+            </form> #}
         </div>
 
 {% endblock %}
