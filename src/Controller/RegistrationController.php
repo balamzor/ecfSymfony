@@ -32,14 +32,15 @@ class RegistrationController extends AbstractController
             $user->setCity($form->get('city')->getData());
             $user->setTelephone($form->get('telephone')->getData());
             $user->setBirthDate($form->get('birthDate')->getData());
-
+            $plainPassword = $form->get('plainPassword')->getData();
+            $hashedPassword = $userPasswordHasher->hashPassword($user, $plainPassword);
+            $user->setPassword($hashedPassword);
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
-
             return $security->login($user, UserAuthenticator::class, 'main');
+
         }
 
         return $this->render('registration/register.html.twig', [

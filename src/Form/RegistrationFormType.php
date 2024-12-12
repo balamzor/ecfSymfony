@@ -10,12 +10,13 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class RegistrationFormType extends AbstractType
@@ -85,15 +86,51 @@ class RegistrationFormType extends AbstractType
                 'label' => 'J\'accepte les conditions d\'utilisation',
                 'label_attr' => ['class' => 'form-check-label'],
             ])
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+            // ->add('plainPassword', PasswordType::class, [
+            //     // instead of being set onto the object directly,
+            //     // this is read and encoded in the controller
+            //     'mapped' => false,
+            //     'error_bubbling' => true,
+            //     'attr' => ['autocomplete' => 'new-password', 'class' => 'form-control', 'placeholder' => 'Mot de passe'],
+            //     'constraints' => [
+            //         new NotBlank([
+            //             'message' => 'Choisissez un mot de passe',
+            //         ]),
+            //         new Length([
+            //             'min' => 6,
+            //             'minMessage' => 'Le mot de passe doit comporter au moins {{ limit }} caractères',
+            //             // max length allowed by Symfony for security reasons
+            //             'max' => 4096,
+            //         ]),
+            //         // new Assert\Callback([
+            //         //     'callback' => function ($object, ExecutionContextInterface $context) {
+            //         //         $form = $context->getRoot();
+
+            //         //         $plainPassword = $form->get('plainPassword')->getData();
+            //         //         $confirmPassword = $form->get('confirmPassword')->getData();
+
+            //         //         if ($plainPassword !== $confirmPassword) {
+            //         //             $context
+            //         //                 ->buildViolation('Les mots de passe ne sont pas identiques')
+            //         //                 ->atPath('confirmPassword')
+            //         //                 ->addViolation();
+            //         //         }
+            //         //     },
+            //         // ]),
+            //     ],
+            //     'label' => 'form.password',
+
+            //     'label_attr' => ['class' => 'form-label'],
+            // ])
+            ->add('plainPassword', RepeatedType::class, [
                 'mapped' => false,
                 'error_bubbling' => true,
-                'attr' => ['autocomplete' => 'new-password', 'class' => 'form-control', 'placeholder' => 'Mot de passe'],
+                'type' => PasswordType::class,
+                'attr' => ['autocomplete' => 'new-password', 'class' => 'form-control'],
+                'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Choisissez un mot de passe',
+                        'message' => 'Entrez un mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
@@ -101,42 +138,18 @@ class RegistrationFormType extends AbstractType
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
-                    // new Assert\Callback([
-                    //     'callback' => function ($object, ExecutionContextInterface $context) {
-                    //         $form = $context->getRoot();
-
-                    //         $plainPassword = $form->get('plainPassword')->getData();
-                    //         $confirmPassword = $form->get('confirmPassword')->getData();
-
-                    //         if ($plainPassword !== $confirmPassword) {
-                    //             $context
-                    //                 ->buildViolation('Les mots de passe ne sont pas identiques')
-                    //                 ->atPath('confirmPassword')
-                    //                 ->addViolation();
-                    //         }
-                    //     },
-                    // ]),
                 ],
-                'label' => 'form.password',
+                'first_options' => [
+                    'label' => 'Mot de passe',
+                    'label_attr' => ['class' => 'form-label'],
+                    'attr' => ['class' => 'form-control'],
 
-                'label_attr' => ['class' => 'form-label'],
-            ])
-            ->add('confirmPassword', PasswordType::class, [
-                'mapped' => false,
-                'error_bubbling' => true,
-                'label' => 'form.confirm_password',
-                'label_attr' => ['class' => 'form-label'],
-                'attr' => ['autocomplete' => 'new-password', 'class' => 'form-control', 'placeholder' => 'Confirmer le mot de passe'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
+                ],
+                'second_options' => [
+                    'label' => 'Confirmation',
+                    'label_attr' => ['class' => 'form-label'],
+                    'attr' => ['class' => 'form-control'],
+
                 ],
             ])
         ;

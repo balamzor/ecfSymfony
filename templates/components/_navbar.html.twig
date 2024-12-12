@@ -1,6 +1,6 @@
 {% block navbar %}
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary bg-info">
+<nav class="navbar navbar-expand-lg bg-body-tertiary bg-custom">
   <div class="container-fluid">
     <a class="navbar-brand text-dark" href="#">BiblioTech</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,19 +9,34 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active text-dark" aria-current="page" href="#">Accueil</a>
+          <a class="nav-link active text-dark fw-bold" aria-current="page" href="#">Accueil</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-dark" href="#">Nos livres</a>
+          <a class="nav-link text-dark fw-bold" href="#">Nos livres</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-dark" href="#">Nos Salles</a>
+          <a class="nav-link text-dark fw-bold" href="#">Nos salles</a>
         </li>
       </ul>
+      {% if is_granted("ROLE_ADMIN") %}
+   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <span class="fw-bold  ml-5" style="color: lightgreen; border-left: 2px solid black; margin-left: 10px; padding-left: 10px">Administration</span>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active fw-bold" aria-current="page" href="{{ path('app_admin_user_index') }}" style="color: lightgreen;">Utilisateur</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-bold" href="#" style="color: lightgreen;">Livres</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-bold" href="#" style="color: lightgreen;">Salles</a>
+        </li>
+      </ul>
+        {% endif %}
     {% if is_granted("ROLE_USER") or is_granted("ROLE_ADMIN") or is_granted("ROLE_SUBSCRIBER") %}
-         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
              <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link dropdown-toggle text-dark fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Bienvenue {{ app.user.firstName }}
               </a>
               <ul class="dropdown-menu">
@@ -30,30 +45,17 @@
               </ul>
             </li>
          </ul>
-    {# {% elseif  is_granted("ROLE_ADMIN") %}
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Bienvenue {{ app.user.firstName }}
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Admin</a></li>
-                <li><a class="dropdown-item" href="{{ path('profile_user') }}">Mon compte</a></li>
-                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Se déconnecter</a></li>
-              </ul>
-            </li>
-         </ul> #}
     {% else %}
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}">Se connecter</a>
+                <a class="nav-link active text-dark fw-bold" aria-current="page" href="{{ path('app_login') }}">Se connecter</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active text-dark fw-bold" aria-current="page" href="{{ path('app_register') }}">S'inscrire</a>
             </li>
         </ul>
     {% endif %}
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+        
     </div>
   </div>
 </nav>
