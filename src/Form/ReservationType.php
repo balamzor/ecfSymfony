@@ -3,9 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Reservation;
-use App\Entity\User;
-use App\Entity\Workspace;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,18 +13,12 @@ class ReservationType extends AbstractType
     {
         $builder
             ->add('RentalStart', null, [
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'label' => 'Heure de début de réservation',
             ])
             ->add('RentalEnd', null, [
-                'widget' => 'single_text'
-            ])
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-'choice_label' => 'id',
-            ])
-            ->add('workspace', EntityType::class, [
-                'class' => Workspace::class,
-'choice_label' => 'id',
+                'widget' => 'single_text',
+                'label' => 'Heure de fin de réservation',
             ])
         ;
     }
