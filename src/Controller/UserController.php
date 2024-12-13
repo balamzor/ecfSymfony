@@ -7,22 +7,27 @@ use App\Form\PaymentType;
 use App\Form\EditUserType;
 use App\Form\SubscribeType;
 use App\Entity\Subscriptions;
-use App\Form\RegistrationFormType;
 use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+
+
 
 class UserController extends AbstractController
 {
+    private $csrfTokenManager;
+
+    public function __construct(CsrfTokenManagerInterface $csrfTokenManager)
+    {
+        $this->csrfTokenManager = $csrfTokenManager;
+
+    }
     #[Route('/user', name: 'app_user')]
     public function index(): Response
     {
@@ -54,17 +59,44 @@ class UserController extends AbstractController
             $prix = "259,09";
             $echeance = '+1 year';
         }
+
+        // $token = $this->container->get('security.csrf.token_manager')->getToken('subscribe_form');
+        // dd($token);
         $subscriptions = new Subscriptions();
         $form = $this->createForm(SubscribeType::class, $subscriptions);
         $form->handleRequest($request);
+        // $form->add('csrf_token', HiddenType::class, [
+        //     'data' => $token,
+        //     'mapped' => false,
+        // ]);
+
+        // if ($form->isSubmitted() && !$this->isCsrfTokenValid('subscribe_form', $request->get('csrf_token'))) {
+        //     $this->addFlash('danger', 'Erreur de token CSRF');
+        //     return $this->redirectToRoute('payment_user', ['id' => $id]);
+        // }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $activeSubscription = $entityManager->getRepository(Subscriptions::class)->findActiveSubscriptionByUser($user);
+            if ($activeSubscription) {
+                $this->addFlash('danger', 'Vous avez déjà un abonnement en cours');
+                return $this->redirectToRoute('payment_user', ['id' => $id]);
+            }
             $subscriptions->setIdUser($user);
             $subscriptions->setDateDebut(new \DateTime());
             $subscriptions->setDateFin((new \DateTime())->modify($echeance));
 
             $entityManager->persist($subscriptions);
+
+            $roles = $user->getRoles();
+            $roles[] = 'ROLE_SUBSCRIBED';
+            $user->setRoles($roles);
+            $entityManager->persist($user);
+            $tokenStorage = $this->container->get('security.token_storage');
+            $newToken = new UsernamePasswordToken($user, 'main', $user->getRoles());
+            $tokenStorage->setToken($newToken);
+
             $entityManager->flush();
+
 
             return $this->redirectToRoute('profile_user');
         }

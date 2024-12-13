@@ -18,7 +18,7 @@
           <a class="nav-link text-dark fw-bold" href="#">Salles</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link fw-bold" href="{{ path('app_home') }}" style="color: lightgreen;">Retour au site</a>
+          <a class="nav-link fw-bold" href="{{ path('app_home') }}" style="color: lightgreen; border-left: 2px solid black; margin-left: 10px; padding-left: 10px">Retour au site</a>
         </li>
       </ul>
     {% if is_granted("ROLE_USER") or is_granted("ROLE_ADMIN") or is_granted("ROLE_SUBSCRIBER") %}

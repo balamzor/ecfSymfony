@@ -23,13 +23,14 @@
             <table class="container table border rounded mt-5 shadow">
                 <tr>
                     <th class="p-3">Abonnement</th>
-                {% if subscription %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td class="p-3">Vous êtes un administrateur et n'avez pas besoin d'abonnement.</td>
+                {% elseif subscription %}
                     <td class="p-3">Abonnement actif jusqu'au {{ subscription.dateFin|date('d/m/Y') }}</td>
                     {# <p>Début : {{ subscription.dateDebut|date('d/m/Y') }}</p>
                     <p>Fin : {{ subscription.dateFin|date('d/m/Y') }}</p> #}
                 {% else %}
                     <td>Vous n'avez pas d'abonnement en cours. <a href="{{ path('subscribe_user') }}"><button class="btn btn-success ml-3">S'abonner</button></a></td>
-                    
                 {% endif %}
                 </tr>
                 <tr>

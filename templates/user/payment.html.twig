@@ -57,10 +57,12 @@
             <div class="container table border rounded mt-5 mb-5 shadow w-50 p-3">
             {{ form_start(form, { method: 'POST' }) }}
             {{ form_errors(form) }}
-
-{% for field in form %}
-    {{ form_errors(field) }}
-{% endfor %}
+            {% for field in form %}
+                {{ form_errors(field) }}
+            {% endfor %}
+                 {% for flash_error in app.flashes('error') %}
+                    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
             <div class="row">
                 <div class="col">
                     <div class="input-group input-group-sm mb-3">
