@@ -40,7 +40,6 @@ class EditUserType extends AbstractType
                 'label_attr' => ['class' => 'form-label'],
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Date de naissance'],
                 'format' => 'dd-MM-yyyy',
-                'data' => new \DateTime('-18 years'),
             ])
             ->add('address', TextType::class, [
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Adresse'],
