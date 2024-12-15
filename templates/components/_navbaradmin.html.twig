@@ -6,16 +6,16 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active text-dark fw-bold" aria-current="page" href="{{ path('app_admin_user_index') }}">Utilisateurs</a>
+            <a class="nav-link active text-dark fw-bold" aria-current="page" href="{{ path('app_admin_user_index') }}">{{ 'navbar.users'|trans }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark fw-bold" href="#">Livres</a>
+            <a class="nav-link text-dark fw-bold" href="#">{{ 'navbar.books'|trans }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark fw-bold" href="{{ path('app_admin_workplace_index') }}">Salles</a>
+            <a class="nav-link text-dark fw-bold" href="{{ path('app_admin_workplace_index') }}">{{ 'navbar.workplaces'|trans }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-bold" href="{{ path('app_home') }}" style="color: lightgreen;">Retour au site</a>
+            <a class="nav-link fw-bold" href="{{ path('app_home') }}" style="color: lightgreen;">{{ 'navbar.return'|trans }}</a>
           </li>
         </ul>
         {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_SUBSCRIBER') %}
