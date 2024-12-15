@@ -5,3 +5,7 @@ body {
 .bg-custom {
   background-color: #b08bd5;
 }
+
+.custom-spacing {
+  margin-bottom: 20px;
+}

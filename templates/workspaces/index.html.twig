@@ -11,7 +11,7 @@
 {% block body %}
   <h1>Salles de travail disponibles</h1>
 
-  <div class="d-flex p-2">
+  <div class="d-flex p-2 flex-wrap">
     {% for workspace in workspaces %}
       <div class="card" style="width: 18rem; margin: 0 10px">
         <img src="{{ asset('../images/workspaces/' ~ workspace.image) }}" class="card-img-top" style="height: 18rem; object-fit: cover" alt="photo de la salle" />

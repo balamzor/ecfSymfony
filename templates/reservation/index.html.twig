@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Réserver une salle
+{% endblock %}
+
+{% block stylesheets %}
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" rel="stylesheet" />
+  <link href="/styles/calendar.css" rel="stylesheet" />
+{% endblock %}
+
+{% block navbar %}
+  {% include 'components/_navbar.html.twig' %}
+{% endblock %}
+
+{% block body %}
+  <div class="container" style="margin-bottom:20px">
+    <h2>Réserver la salle: {{ workspace.name }}</h2>
+
+    <div id="calendar"></div>
+
+    <a href="{{ path('workspace_detail', { id: workspace.id }) }}" class="btn btn-secondary">Retour à la salle</a>
+    <a href="{{ path('app_workspaces') }}" class="btn btn-secondary">Voir les autres salles</a>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var calendarEl = document.getElementById('calendar');
+    
+      if (!calendarEl) {
+        console.error("L'élément avec id 'calendar' est introuvable.");
+        return;
+      }
+      
+      // Vérifier si l'utilisateur est connecté
+      var userId = {{ app.user ? app.user.id : 'null' }};
+      
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        locale: 'fr',
+        slotDuration: '01:00:00',
+        allDaySlot: false,
+        businessHours: {
+          daysOfWeek: [1, 2, 3, 4, 5],
+          startTime: '08:00',
+          endTime: '19:00'
+        },
+        height: 'auto',
+        eventClassNames: 'my-custom-event',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        nowIndicator: true,
+        timeZone: 'Europe/Paris',
+        selectable: true,
+        selectOverlap: false,
+        
+        // Récupérer les événements
+        events: function(info, successCallback, failureCallback) {
+          fetch("{{ path('reservation_events', {'id': workspace.id}) }}")
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error('Erreur lors de la récupération des événements.');
+              }
+              return response.json();
+            })
+            .then((data) => successCallback(data))
+            .catch((error) => failureCallback(error));
+        },
+        
+        // Clic sur un événement
+        eventClick: function(info) {
+  // Vérification si l'utilisateur connecté est celui qui a créé l'événement
+  if (userId && info.event.extendedProps.user_id === userId) {
+    // Créer un lien vers une page où l'utilisateur pourra modifier ou supprimer l'événement
+    const url = "{{ path('app_reservation_manage', {id: 'temp'}) }}".replace('temp', info.event.id);
+    if (confirm("Voulez-vous gérer cet événement ? Vous serez redirigé vers la page de gestion.")) {
+      window.location.href = url; // Redirige l'utilisateur vers la page de gestion de l'événement
+    }
+  }
+},
+
+        // Mise en surbrillance de l'événement de l'utilisateur connecté
+        eventDidMount: function(info) {
+      if (userId && info.event.extendedProps.user_id === userId) {
+        info.el.style.borderColor = '#b08bd5'; 
+        info.el.style.backgroundColor = '#b08bd5'; 
+        info.el.style.cursor = 'pointer';
+      }
+    }
+      });
+
+      calendar.render();
+    });
+  </script>
+{% endblock %}
