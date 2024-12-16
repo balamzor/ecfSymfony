@@ -18,8 +18,9 @@
         <div class="card-body">
           <h5 class="card-title">{{ workspace.name }}</h5>
           <p class="card-text">{{ workspace.capacity }} personnes</p>
-          <a href="{{ path('app_admin_workplace_show', { id: workspace.id }) }}" class="btn btn-secondary">Voir le détail</a>
-          <a href="{{ path('app_admin_workplace_edit', { id: workspace.id }) }}" class="btn btn-primary">Modifier</a>
+          <a href="{{ path('app_admin_workplace_show', { id: workspace.id }) }}" class="btn btn-secondary" style="margin-top: 10px;">Voir le détail</a>
+          <a href="{{ path('app_admin_workplace_edit', { id: workspace.id }) }}" class="btn btn-primary" style="margin-top: 10px;">Modifier</a>
+          <a href="{{ path('app_reservation_reservations', { id: workspace.id }) }}" class="btn btn-primary" style="margin-top: 10px;">Voir les réservations</a>
         </div>
       </div>
     {% else %}

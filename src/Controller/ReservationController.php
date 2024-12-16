@@ -340,4 +340,16 @@ class ReservationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/{id}', name: 'app_reservation_reservations', methods: ['GET'])]
+    public function reservations(ReservationRepository $reservationRepository, EntityManagerInterface $entityManager, $id): Response
+    {
+        $reservation = $reservationRepository->findByWorkspaceId($id);
+        $workspace = $entityManager->getRepository(Workspace::class)->find($id);
+
+        return $this->render('admin_workplace/reservations.html.twig', [
+            'reservation' => $reservation,
+            'workspace' => $workspace,
+        ]);
+    }
 }
