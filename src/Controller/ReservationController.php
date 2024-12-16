@@ -16,7 +16,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+// use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
 
 class ReservationController extends AbstractController
 {
@@ -30,8 +32,12 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/reservation/{id}', name: 'app_reservation')]
-    public function index(Request $request, $id): Response
+    public function index(Request $request, $id, AuthorizationCheckerInterface $authChecker): Response
     {
+        if (!$authChecker->isGranted('ROLE_SUBSCRIBED')) {
+            return $this->redirectToRoute('subscribe_user');
+        }
+
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
         $id = (int)$id;
