@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'f9931cfe9ae3b68016b96a9fb73cd9b98d1ef2bd',
+        'reference' => '3f9f88f8f9b68b84c482a2b61982e1de520a8df1',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'f9931cfe9ae3b68016b96a9fb73cd9b98d1ef2bd',
+            'reference' => '3f9f88f8f9b68b84c482a2b61982e1de520a8df1',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -439,8 +439,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '3.0.0',
-                1 => '1.0|2.0|3.0',
+                0 => '1.0|2.0|3.0',
+                1 => '3.0.0',
             ),
         ),
         'psr/simple-cache-implementation' => array(

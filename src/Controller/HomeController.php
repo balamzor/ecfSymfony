@@ -16,6 +16,7 @@ class HomeController extends AbstractController
         $localeSwitcher->setLocale($locale);
 
         return $this->render('home/index.html.twig', [
+            'controller_name' => 'HomeController',
             'home' => $translator->trans('home'),
             'navbar' => $translator->trans('navbar')
         ]);

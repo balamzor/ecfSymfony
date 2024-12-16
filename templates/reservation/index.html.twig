@@ -16,6 +16,8 @@
 {% block body %}
   <div class="container" style="margin-bottom:20px">
     <h2>Réserver la salle: {{ workspace.name }}</h2>
+    <p>Les réservations sont possibles de 8h à 19h du lundi au vendredi.</p>
+    <p>Vous pouvez réserver une salle pendant 1 à 4h consécutives.</p>
 
     <div id="calendar"></div>
 
@@ -73,20 +75,61 @@
             .then((data) => successCallback(data))
             .catch((error) => failureCallback(error));
         },
+
+        select: function (info) {
+    // Vérification si l'utilisateur est connecté
+    if (!userId) {
+        alert("Vous devez être connecté pour effectuer une réservation.");
+        return;
+    }
+
+    if (confirm("Voulez-vous réserver cette plage horaire ?")) {
+        const reservationData = {
+            start: info.startStr,
+            end: info.endStr
+        };
+
+        fetch("{{ path('app_reservation_create', {'id': workspace.id}) }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(reservationData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur lors de la création de la réservation.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert(data.message);
+                calendar.refetchEvents(); // Recharger les événements
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert("Une erreur s'est produite lors de la création de la réservation.");
+        });
+    }
+},
         
         // Clic sur un événement
         eventClick: function(info) {
-  // Vérification si l'utilisateur connecté est celui qui a créé l'événement
+  // Vérif si l'utilisateur connecté est celui qui a créé l'événement
   if (userId && info.event.extendedProps.user_id === userId) {
-    // Créer un lien vers une page où l'utilisateur pourra modifier ou supprimer l'événement
+    // modifier ou supprimer l'événement
     const url = "{{ path('app_reservation_manage', {id: 'temp'}) }}".replace('temp', info.event.id);
     if (confirm("Voulez-vous gérer cet événement ? Vous serez redirigé vers la page de gestion.")) {
-      window.location.href = url; // Redirige l'utilisateur vers la page de gestion de l'événement
+      window.location.href = url; 
     }
   }
 },
 
-        // Mise en surbrillance de l'événement de l'utilisateur connecté
+        // Résa de l'utilisateur connecté
         eventDidMount: function(info) {
       if (userId && info.event.extendedProps.user_id === userId) {
         info.el.style.borderColor = '#b08bd5'; 
