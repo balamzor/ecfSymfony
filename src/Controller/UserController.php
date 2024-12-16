@@ -5,10 +5,12 @@ namespace App\Controller;
 
 use App\Form\PaymentType;
 use App\Form\EditUserType;
+use App\Entity\Reservation;
 use App\Form\SubscribeType;
 use App\Entity\Subscriptions;
 use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\ReservationController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,9 +25,10 @@ class UserController extends AbstractController
 {
     private $csrfTokenManager;
 
-    public function __construct(CsrfTokenManagerInterface $csrfTokenManager)
+    public function __construct(CsrfTokenManagerInterface $csrfTokenManager, ReservationController $reservations)
     {
         $this->csrfTokenManager = $csrfTokenManager;
+        $this->reservations = $reservations;
 
     }
     #[Route('/user', name: 'app_user')]
@@ -111,15 +114,27 @@ class UserController extends AbstractController
 
 
     #[Route('/user/profile', name: 'profile_user')]
-    public function profile(EntityManagerInterface $entityManager): Response
+    public function profile(EntityManagerInterface $entityManager, ReservationController $reservations): Response
     {
         $user = $this->getUser();
         $subscription = $entityManager
             ->getRepository(Subscriptions::class)
             ->findActiveSubscriptionByUser($user);
+
+
+        $reservations = $entityManager
+            ->getRepository(Reservation::class)
+            ->findBy(
+                ['user' => $user],
+                ['RentalStart' => 'DESC']
+            );
+        // dd($reservations);
+
         return $this->render('user/profile.html.twig', [
-            'subscription' => $subscription
+            'subscription' => $subscription,
+            'locations' => $reservations
         ]);
+
     }
     #[Route('/user/update', name: 'profile_update')]
     public function update(Request $request, EntityManagerInterface $entityManager): Response

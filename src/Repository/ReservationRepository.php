@@ -1,14 +1,13 @@
 <?php
 
+// src/Repository/ReservationRepository.php
+
 namespace App\Repository;
 
 use App\Entity\Reservation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Reservation>
- */
 class ReservationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -16,28 +15,27 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    //    /**
-    //     * @return Reservation[] Returns an array of Reservation objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    // Cette méthode vérifie si une réservation chevauche une autre.
+    public function findOverlappingReservations($startTime, $endTime, $salle)
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.RentalStart < :RentalEnd')
+            ->andWhere('r.RentalEnd > :RentalStart')
+            ->andWhere('r.workspace = :salle')
+            ->setParameter('RentalStart', $startTime)
+            ->setParameter('RentalEnd', $endTime)
+            ->setParameter('salle', $salle)
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Reservation
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findByWorkspaceId(int $workspaceId): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.workspace = :workspaceId')
+            ->setParameter('workspaceId', $workspaceId)
+            ->orderBy('r.RentalStart', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -1,4 +1,3 @@
-{# templates/workspace/detail.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}
@@ -10,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-  <div class="container">
+  <div class="container" style="margin-bottom:20px">
     <h1>Salle {{ workspace.name }}</h1>
     <img src="{{ asset('../images/workspaces/' ~ workspace.image) }}" class="rounded" style="height: 18rem; width: 30rem; object-fit: cover; margin-bottom:10px" alt="photo de la salle" />
     <p style="font-weight:bold">Capacité : {{ workspace.capacity }} personnes</p>
@@ -22,6 +21,8 @@
       {% endfor %}
     </ul>
 
-    <a href="{{ path('app_workspaces') }}">Voir les autres salles</a>
+    <a href="{{ path('app_reservation', { id: workspace.id }) }}" class="btn btn-primary">Réserver cette salle</a>
+
+    <a href="{{ path('app_workspaces') }}" class="btn btn-secondary">Voir les autres salles</a>
   </div>
 {% endblock %}

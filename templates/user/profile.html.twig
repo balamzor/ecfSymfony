@@ -71,7 +71,33 @@
         <div class="container w-75 tab-pane" id="pills-emprunt" role="tabpanel" aria-labelledby="pills-emprunt-tab">
             <p>caca</p>
         </div>
-        <div class="container w-75 tab-pane" id="pills-location" role="tabpanel" aria-labelledby="pills-location-tab">...</div>
+        <div class="container w-75 tab-pane" id="pills-location" role="tabpanel" aria-labelledby="pills-location-tab">
+            {% if locations|length == 0 %}
+                <p>Vous n'avez pas de r&eacute;servation en cours.</p>
+            {% else %}
+                <h3 class="mt-5">Vos r&eacute;servations :</h3>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nom de la salle</th>
+                        <th scope="col">Date et heure de d&eacute;but</th>
+                        <th scope="col">Date de fin</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for reservation in locations %}
+                    {# {{ dump(reservation) }} #}
+
+                        <tr>
+                            <td>{{ reservation.workspace.name }}</td>
+                            <td>{{ reservation.RentalStart|date('d/m/Y H:i') }}</td>
+                            <td>{{ reservation.RentalEnd|date('d/m/Y H:i') }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
     </div>
 </div>
 

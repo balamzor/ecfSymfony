@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  Salles de travail
+  Les salles de travail
 {% endblock %}
 
 {% block navbar %}
-  {% include 'components/_navbar.html.twig' %}
+  {% include 'components/_navbaradmin.html.twig' %}
 {% endblock %}
 
 {% block body %}
-  <h1>Salles de travail disponibles</h1>
+  <h1>Salles de travail</h1>
 
   <div class="d-flex p-2 flex-wrap">
     {% for workspace in workspaces %}
@@ -18,9 +18,16 @@
         <div class="card-body">
           <h5 class="card-title">{{ workspace.name }}</h5>
           <p class="card-text">{{ workspace.capacity }} personnes</p>
-          <a href="{{ path('workspace_detail', { id: workspace.id }) }}" class="btn btn-primary">En savoir plus</a>
+          <a href="{{ path('app_admin_workplace_show', { id: workspace.id }) }}" class="btn btn-secondary">Voir le détail</a>
+          <a href="{{ path('app_admin_workplace_edit', { id: workspace.id }) }}" class="btn btn-primary">Modifier</a>
         </div>
       </div>
+    {% else %}
+      <tr>
+        <td colspan="5">no records found</td>
+      </tr>
     {% endfor %}
   </div>
+
+  <a href="{{ path('app_admin_workplace_new') }}" class="btn btn-success">Ajouter une salle</a>
 {% endblock %}
