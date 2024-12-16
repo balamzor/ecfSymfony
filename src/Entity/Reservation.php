@@ -95,4 +95,9 @@ class Reservation
 
         return $this;
     }
+
+    public function getUserId(): ?int
+    {
+        return $this->getUser()->getId();
+    }
 }
