@@ -341,7 +341,7 @@ class ReservationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_reservation_reservations', methods: ['GET'])]
+    #[Route('/admin/reservation/{id}', name: 'app_reservation_reservations', methods: ['GET'])]
     public function reservations(ReservationRepository $reservationRepository, EntityManagerInterface $entityManager, $id): Response
     {
         $reservation = $reservationRepository->findByWorkspaceId($id);
