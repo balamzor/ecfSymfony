@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Liste des Livres</h1>
+    <a href="{{ path('livre_new') }}" class="btn btn-success mb-3">Ajouter un Livre</a>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Titre</th>
+                <th>Disponibilité</th>
+                <th>Date de Prêt</th>
+                <th>Date de Retour Prévue</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for livre in livres %}
+            <tr class="{% if livre.dateRetourPrevue and livre.dateRetourPrevue < 'now'|date and not livre.estDisponible %}table-danger{% endif %}">
+                <td>
+                    {% if livre.image %}
+                    <img src="{{ livre.image }}" alt="{{ livre.titre }}" style="width: 80px;">
+                    {% else %}
+                    Pas d'image
+                    {% endif %}
+                </td>
+                <td>{{ livre.titre }}</td>
+                <td>{{ livre.estDisponible ? 'Disponible' : 'Emprunté' }}</td>
+                <td>{{ livre.dateEmprunt ? livre.dateEmprunt|date('d/m/Y') : 'N/A' }}</td>
+                <td>{{ livre.dateRetourPrevue ? livre.dateRetourPrevue|date('d/m/Y') : 'N/A' }}</td>
+                <td>
+                    <a href="{{ path('livre_show', { id: livre.id }) }}" class="btn btn-info btn-sm">Voir</a>
+                    <a href="{{ path('livre_edit', { id: livre.id }) }}" class="btn btn-primary btn-sm">Modifier</a>
+                    {% if not livre.estDisponible %}
+                        <form method="post" action="{{ path('livre_restituer', { id: livre.id }) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-success btn-sm">Restituer</button>
+                        </form>
+                    {% endif %}
+                    {{ include('livre/_delete_form.html.twig') }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

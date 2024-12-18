@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "78900efebb56452ba508e6158c8a7c6e",
+  "content-hash": "920355c8bbe58ab8d514ed6f267c26b0",
   "packages": [
     {
       "name": "composer/semver",
@@ -7605,6 +7605,78 @@
       "time": "2024-09-25T14:18:03+00:00"
     },
     {
+      "name": "symfony/webpack-encore-bundle",
+      "version": "v2.2.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/symfony/webpack-encore-bundle.git",
+        "reference": "e335394b68a775a9b2bd173a8ba4fd2001f3870c"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/symfony/webpack-encore-bundle/zipball/e335394b68a775a9b2bd173a8ba4fd2001f3870c",
+        "reference": "e335394b68a775a9b2bd173a8ba4fd2001f3870c",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=8.1.0",
+        "symfony/asset": "^5.4 || ^6.2 || ^7.0",
+        "symfony/config": "^5.4 || ^6.2 || ^7.0",
+        "symfony/dependency-injection": "^5.4 || ^6.2 || ^7.0",
+        "symfony/http-kernel": "^5.4 || ^6.2 || ^7.0",
+        "symfony/service-contracts": "^1.1.9 || ^2.1.3 || ^3.0"
+      },
+      "require-dev": {
+        "symfony/framework-bundle": "^5.4 || ^6.2 || ^7.0",
+        "symfony/http-client": "^5.4 || ^6.2 || ^7.0",
+        "symfony/phpunit-bridge": "^5.4 || ^6.2 || ^7.0",
+        "symfony/twig-bundle": "^5.4 || ^6.2 || ^7.0",
+        "symfony/web-link": "^5.4 || ^6.2 || ^7.0"
+      },
+      "type": "symfony-bundle",
+      "extra": {
+        "thanks": {
+          "url": "https://github.com/symfony/webpack-encore",
+          "name": "symfony/webpack-encore"
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "Symfony\\WebpackEncoreBundle\\": "src"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "Symfony Community",
+          "homepage": "https://symfony.com/contributors"
+        }
+      ],
+      "description": "Integration of your Symfony app with Webpack Encore",
+      "support": {
+        "issues": "https://github.com/symfony/webpack-encore-bundle/issues",
+        "source": "https://github.com/symfony/webpack-encore-bundle/tree/v2.2.0"
+      },
+      "funding": [
+        {
+          "url": "https://symfony.com/sponsor",
+          "type": "custom"
+        },
+        {
+          "url": "https://github.com/fabpot",
+          "type": "github"
+        },
+        {
+          "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+          "type": "tidelift"
+        }
+      ],
+      "time": "2024-10-02T07:27:19+00:00"
+    },
+    {
       "name": "symfony/yaml",
       "version": "v6.4.13",
       "source": {
@@ -8058,6 +8130,63 @@
         }
       ],
       "time": "2024-12-05T18:35:55+00:00"
+    },
+    {
+      "name": "fzaninotto/faker",
+      "version": "v1.5.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/fzaninotto/Faker.git",
+        "reference": "d0190b156bcca848d401fb80f31f504f37141c8d"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/d0190b156bcca848d401fb80f31f504f37141c8d",
+        "reference": "d0190b156bcca848d401fb80f31f504f37141c8d",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=5.3.3"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "squizlabs/php_codesniffer": "~1.5"
+      },
+      "suggest": {
+        "ext-intl": "*"
+      },
+      "type": "library",
+      "extra": {
+        "branch-alias": {
+          "dev-master": "1.5.x-dev"
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "Faker\\": "src/Faker/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "François Zaninotto"
+        }
+      ],
+      "description": "Faker is a PHP library that generates fake data for you.",
+      "keywords": [
+        "data",
+        "faker",
+        "fixtures"
+      ],
+      "support": {
+        "issues": "https://github.com/fzaninotto/Faker/issues",
+        "source": "https://github.com/fzaninotto/Faker/tree/master"
+      },
+      "abandoned": true,
+      "time": "2015-05-29T06:29:14+00:00"
     },
     {
       "name": "masterminds/html5",
